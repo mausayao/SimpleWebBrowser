@@ -1,0 +1,33 @@
+name: SimpleWebBrowser
+options:
+  bundleIdPrefix: br.com.mauricio
+
+targets:
+  SimpleWebBrowser:
+    platform: iOS
+    deploymentTarget: "15.0"
+    type: application
+    sources: [SimpleWebBrowser]
+
+    info:
+      path: SimpleWebBrowser/Info.plist
+      properties: 
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UIRequiredDeviceCapabilities:
+          - armv7
+        UILaunchStoryboardName: LaunchScreen
+        LSRequiresIPhoneOS: true
+        UIApplicationSceneManifest:
+            UIApplicationSupportsMultipleScenes: false
+            UISceneConfigurations:
+              UIWindowSceneSessionRoleApplication:
+                - UISceneConfigurationName: Default Configuration
+                  UISceneDelegateClassName: $(PRODUCT_MODULE_NAME).SceneDelegate
