@@ -7,7 +7,7 @@
 
 import UIKit
 
-class View: UIView {
+class View: UIView, ViewCodable {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -17,9 +17,9 @@ class View: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-}
-
-extension View: ViewCodable {
+    
+    // MARK: - ViewCodable
+    
     func viewHierarchy() {
         
     }
