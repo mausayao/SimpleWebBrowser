@@ -9,6 +9,7 @@ import UIKit
 
 protocol BrowserViewControllerLogic: AnyObject {
     func displayView()
+    func displaySheet()
 }
 
 final class BrowserViewController: ViewController {
@@ -28,6 +29,17 @@ final class BrowserViewController: ViewController {
         self.interactor = interactor
         super.init()
     }
+    
+    // MARK: - Private methods
+    
+    private func setupNavigationBar() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "Open",
+            style: .plain,
+            target: self,
+            action: #selector(displaySheet)
+        )
+    }
 }
 
 // MARK: - Lifecycle
@@ -35,6 +47,7 @@ final class BrowserViewController: ViewController {
 extension BrowserViewController {    
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNavigationBar()
         interactor.requestView()
     }
     
@@ -48,6 +61,28 @@ extension BrowserViewController {
 
 extension BrowserViewController: BrowserViewControllerLogic {
     func displayView() {
-        browserView.configureView()
+        browserView.openPage(site: "https://google.com")
+        title = "google"
+    }
+    
+    @objc func displaySheet() {
+        let ac = UIAlertController(title: "Open page…", message: nil, preferredStyle: .actionSheet)
+        ac.addAction(
+            UIAlertAction(title: "apple.com", style: .default) {_ in
+                self.browserView.openPage(site: "https://apple.com")
+                self.title = "apple"
+            }
+        )
+        
+        ac.addAction(
+            UIAlertAction(title: "hackingwithswift.com", style: .default) {_ in
+                self.browserView.openPage(site: "https://hackingwithswift.com")
+                self.title = "hackingwithswift"
+            }
+        )
+        
+        ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        ac.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
+        present(ac, animated: true)
     }
 }

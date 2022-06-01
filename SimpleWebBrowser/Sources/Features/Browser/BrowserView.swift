@@ -9,7 +9,7 @@ import UIKit
 import WebKit
 
 protocol BrowserViewProtocol: AnyObject {
-    func configureView()
+    func openPage(site: String)
 }
 
 final class BrowserView: View, WKNavigationDelegate {
@@ -49,8 +49,9 @@ final class BrowserView: View, WKNavigationDelegate {
 // MARK: - BrowserViewProtocol
 
 extension BrowserView: BrowserViewProtocol {
-    func configureView() {
-        let url = URL(string: "https://www.apple.com")!
+    
+    func openPage(site: String) {
+        guard let url = URL(string: site) else { return }
         webView.load(URLRequest(url: url))
     }
 }
