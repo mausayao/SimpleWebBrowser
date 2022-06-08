@@ -14,6 +14,10 @@ protocol BrowserViewControllerLogic: AnyObject {
 
 final class BrowserViewController: ViewController {
     
+    // MARK: - Subviews
+    
+    let progressView = UIProgressView(progressViewStyle: .default)
+    
     // MARK: - Properties
     
     private let interactor: BrowserInteractorProtocol
@@ -39,6 +43,16 @@ final class BrowserViewController: ViewController {
             target: self,
             action: #selector(displaySheet)
         )
+        
+        let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let refresh = UIBarButtonItem(barButtonSystemItem: .refresh, target: nil, action: nil)
+
+        progressView.sizeToFit()
+        
+        let progressButton = UIBarButtonItem(customView: progressView)
+        
+        toolbarItems = [progressButton, spacer, refresh]
+        navigationController?.isToolbarHidden = false
     }
 }
 
@@ -54,6 +68,7 @@ extension BrowserViewController {
     override func loadView() {
         super.loadView()
         self.view = browserView
+        browserView.delegate = self
     }
 }
 
@@ -84,5 +99,11 @@ extension BrowserViewController: BrowserViewControllerLogic {
         ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         ac.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
         present(ac, animated: true)
+    }
+}
+
+extension BrowserViewController: BrowserViewDelegate {
+    func sendProgress(value: Float) {
+        progressView.progress = value
     }
 }

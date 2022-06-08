@@ -8,11 +8,20 @@
 import UIKit
 import WebKit
 
+protocol BrowserViewDelegate: AnyObject {
+    func sendProgress(value: Float)
+}
+
 protocol BrowserViewProtocol: AnyObject {
+    var delegate: BrowserViewDelegate? { get set }
     func openPage(site: String)
+    func reloadPage()
 }
 
 final class BrowserView: View, WKNavigationDelegate {
+    // MARK: - Delegate
+    
+    weak var delegate: BrowserViewDelegate?
     
     // MARK: - Subview
     
@@ -22,6 +31,8 @@ final class BrowserView: View, WKNavigationDelegate {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
+    // MARK: - View codable
     
     override func viewHierarchy() {
         super.viewHierarchy()
@@ -43,15 +54,27 @@ final class BrowserView: View, WKNavigationDelegate {
         super.viewConfiguration()
         webView.navigationDelegate = self
         webView.allowsBackForwardNavigationGestures = true
+        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), context: nil)
+    }
+    
+    // MARK: - WKNavigationDelegate
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "estimatedProgress" {
+            delegate?.sendProgress(value: Float(webView.estimatedProgress))
+        }
     }
 }
 
 // MARK: - BrowserViewProtocol
 
 extension BrowserView: BrowserViewProtocol {
-    
     func openPage(site: String) {
         guard let url = URL(string: site) else { return }
         webView.load(URLRequest(url: url))
+    }
+    
+    func reloadPage() {
+        webView.reload()
     }
 }
