@@ -23,6 +23,12 @@ final class BrowserViewController: ViewController {
     private let interactor: BrowserInteractorProtocol
     private let browserView: BrowserView
     
+    let urls = [
+        (siteTitle: "Hackingwithswift", siteUrl: "https://hackingwithswift.com"),
+        (siteTitle: "Apple", siteUrl: "https://apple.com"),
+        (siteTitle: "Google", siteUrl: "https://google.com")
+    ]
+    
     // MARK: - Init
     
     init(
@@ -61,8 +67,8 @@ final class BrowserViewController: ViewController {
 extension BrowserViewController {    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNavigationBar()
         interactor.requestView()
+        setupNavigationBar()
     }
     
     override func loadView() {
@@ -76,25 +82,21 @@ extension BrowserViewController {
 
 extension BrowserViewController: BrowserViewControllerLogic {
     func displayView() {
-        browserView.openPage(site: "https://google.com")
-        title = "google"
+        browserView.openPage(site: urls[0].siteUrl)
+        title = urls[0].siteTitle
     }
     
     @objc func displaySheet() {
         let ac = UIAlertController(title: "Open page…", message: nil, preferredStyle: .actionSheet)
-        ac.addAction(
-            UIAlertAction(title: "apple.com", style: .default) {_ in
-                self.browserView.openPage(site: "https://apple.com")
-                self.title = "apple"
-            }
-        )
         
-        ac.addAction(
-            UIAlertAction(title: "hackingwithswift.com", style: .default) {_ in
-                self.browserView.openPage(site: "https://hackingwithswift.com")
-                self.title = "hackingwithswift"
-            }
-        )
+        for url in urls {
+            ac.addAction(
+                UIAlertAction(title: url.siteTitle, style: .default, handler: { _ in
+                    self.browserView.openPage(site: url.siteUrl)
+                    self.title = url.siteTitle
+                })
+            )
+        }
         
         ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         ac.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
