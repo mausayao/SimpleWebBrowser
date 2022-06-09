@@ -51,7 +51,7 @@ final class BrowserViewController: ViewController {
         )
         
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let refresh = UIBarButtonItem(barButtonSystemItem: .refresh, target: nil, action: nil)
+        let refresh = UIBarButtonItem(barButtonSystemItem: .refresh, target: browserView, action: #selector(browserView.reloadPage))
 
         progressView.sizeToFit()
         

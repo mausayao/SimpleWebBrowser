@@ -74,7 +74,7 @@ extension BrowserView: BrowserViewProtocol {
         webView.load(URLRequest(url: url))
     }
     
-    func reloadPage() {
+    @objc func reloadPage() {
         webView.reload()
     }
 }
