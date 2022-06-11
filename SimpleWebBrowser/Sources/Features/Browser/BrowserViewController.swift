@@ -52,12 +52,14 @@ final class BrowserViewController: ViewController {
         
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let refresh = UIBarButtonItem(barButtonSystemItem: .refresh, target: browserView, action: #selector(browserView.reloadPage))
+        let back = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: browserView, action: #selector(browserView.back))
+        let forward = UIBarButtonItem(image: UIImage(systemName: "chevron.forward"), style: .plain, target: browserView, action: #selector(browserView.forward))
 
         progressView.sizeToFit()
         
         let progressButton = UIBarButtonItem(customView: progressView)
         
-        toolbarItems = [progressButton, spacer, refresh]
+        toolbarItems = [progressButton, spacer, back, spacer, forward, spacer, refresh]
         navigationController?.isToolbarHidden = false
     }
 }

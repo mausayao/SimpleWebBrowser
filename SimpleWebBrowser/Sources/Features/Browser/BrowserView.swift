@@ -16,6 +16,8 @@ protocol BrowserViewProtocol: AnyObject {
     var delegate: BrowserViewDelegate? { get set }
     func openPage(site: String)
     func reloadPage()
+    func forward()
+    func back()
 }
 
 final class BrowserView: View, WKNavigationDelegate {
@@ -76,5 +78,13 @@ extension BrowserView: BrowserViewProtocol {
     
     @objc func reloadPage() {
         webView.reload()
+    }
+    
+    @objc func forward() {
+        webView.goForward()
+    }
+    
+    @objc func back() {
+        webView.goBack()
     }
 }
